@@ -1,1 +1,64 @@
-<!doctype html><meta charset=utf-8><meta name=robots content=noindex><title>Old Money</title><p>Katalog w przygotowaniu.</p>
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; img-src https://static.zara.net https://gomez.pl https://dtcralphlauren.scene7.com https://www.mrporter.com https://cache.mrporter.com https://cdn.shopify.com https://www.amiparis.com https://amiparis.com https://*.ans-media.com https://*.vinted.net; object-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="no-referrer">
+<title>Old Money — przeceny</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="top">
+  <div class="wrap">
+    <p class="eyebrow">Codzienny katalog przecen</p>
+    <h1>Old Money</h1>
+    <p class="meta" id="meta">Ładowanie…</p>
+  </div>
+</header>
+
+<section class="controls wrap" aria-label="Filtry i sortowanie">
+  <div class="row">
+    <label class="search">
+      <span class="sr">Szukaj</span>
+      <input id="q" type="search" placeholder="Szukaj: kaszmir, oxford, chelsea…" autocomplete="off">
+    </label>
+    <label class="sort">
+      <span>Sortuj</span>
+      <select id="sort">
+        <option value="score">Najlepiej dopasowane</option>
+        <option value="discount">Największy rabat</option>
+        <option value="price">Najniższa cena</option>
+        <option value="price_desc">Najwyższa cena</option>
+        <option value="new">Najnowsze</option>
+      </select>
+    </label>
+  </div>
+  <div class="chips" id="sections" role="group" aria-label="Sekcja"></div>
+  <div class="chips" id="categories" role="group" aria-label="Kategoria"></div>
+  <details class="more-filters" id="morebox">
+  <summary>Więcej filtrów</summary>
+  <div class="row small">
+    <label><span>Sklep</span><select id="shop"><option value="">Wszystkie</option></select></label>
+    <label><span>Marka</span><select id="brand"><option value="">Wszystkie</option></select></label>
+    <label class="range"><span>Cena do <b id="maxlbl"></b></span><input id="max" type="range" min="50" max="3000" step="50"></label>
+    <label class="check"><input id="fresh" type="checkbox"> Tylko nowe i potaniałe</label>
+    <label class="check"><input id="gone" type="checkbox"> Pokaż niewidziane od 3+ dni</label>
+  </div>
+  </details>
+  <p class="count" id="count" aria-live="polite"></p>
+</section>
+
+<main class="wrap">
+  <ul class="grid" id="grid"></ul>
+  <p class="empty" id="empty" hidden>Nic nie pasuje do filtrów.</p>
+</main>
+
+<footer class="wrap foot">
+  <p>Dane ze sklepów, odświeżane codziennie rano. Ceny i dostępność sprawdzaj w sklepie przed zakupem.</p>
+</footer>
+<script src="lib.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
