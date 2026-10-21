@@ -1,12 +1,12 @@
 "use strict";
 // Shop data is untrusted: only textContent and validated https URLs, no HTML parsing of data.
 (function () {
-  var SECTIONS = [["", "Wszystko"], ["rl_ami", "Ralph Lauren i AMI"], ["style", "Styl old money"], ["used", "Używane (Vinted)"]];
+  var SECTIONS = [["", "Wszystko"], ["rl_ami", "Ralph Lauren i AMI"], ["levis", "Levi's"], ["style", "Styl old money"], ["used", "Używane (Vinted)"]];
   var O = window.OMR;
   var CATS = { sweater: "Swetry", knitwear_other: "Dzianina", shirt: "Koszule", polo: "Polo", trousers: "Spodnie",
     jeans: "Jeansy", shoes: "Buty", coat: "Płaszcze", jacket: "Kurtki", blazer: "Marynarki", other: "Inne" };
   var SHOPS = { zara: "Zara", ralphlauren: "Ralph Lauren", ami: "AMI Paris", gomez: "Gomez", answear: "Answear",
-    mrporter: "Mr Porter", vinted: "Vinted" };
+    mrporter: "Mr Porter", vinted: "Vinted", levis: "Levi's" };
   var PAGE = 96;
   var data = null, shown = PAGE;
   var st = load();
@@ -57,7 +57,7 @@
     });
   }
 
-  function card(it, mySizes) {
+  function card(it, mySizes, byShop) {
     var li = el("li", "card" + (it.gone ? " gone" : ""));
     var url = O.safeLink(it.url, it.shop);
     var media = el("a", "media"); if (url) { media.href = url; media.target = "_blank"; media.rel = "noopener noreferrer"; }
@@ -73,7 +73,7 @@
     if (it.fresh === "new") badges.appendChild(el("span", "badge new", "Nowe"));
     if (it.fresh === "drop") badges.appendChild(el("span", "badge drop", "Potaniało"));
     if (it.used) badges.appendChild(el("span", "badge used", "Używane"));
-    if (it.gone) badges.appendChild(el("span", "badge", "Nie widziane od " + day(it.last)));
+    if (it.gone) badges.appendChild(el("span", "badge", "Zniknęło z przecen " + day(it.last)));
     media.appendChild(badges); li.appendChild(media);
 
     var body = el("div", "body");
@@ -88,8 +88,8 @@
     if (it.desc) body.appendChild(el("p", "desc", it.desc));
     var sz = el("div", "sizes");
     if (!it.sk) sz.appendChild(el("span", "size", "rozmiar do sprawdzenia"));
-    O.orderSizes(it.sizes, it.cat, mySizes).slice(0, 10).forEach(function (s) {
-      sz.appendChild(el("span", "size" + (O.isMine(s, it.cat, mySizes) ? " mine" : ""), String(s)));
+    O.orderSizes(it.sizes, it.cat, mySizes, it.shop, byShop).slice(0, 10).forEach(function (s) {
+      sz.appendChild(el("span", "size" + (O.isMine(s, it.cat, mySizes, it.shop, byShop) ? " mine" : ""), String(s)));
     });
     body.appendChild(sz);
     if (it.hist && it.hist.length > 1) {
@@ -97,7 +97,8 @@
       if (first[1] > it.price) body.appendChild(el("span", "hist", "⬇ było " + money(first[1], it.cur) + " (" + day(first[0]) + ")"));
     }
     var fr = el("div", "foot-row"); fr.appendChild(el("span", null, O.own(SHOPS, it.shop) ? SHOPS[it.shop] : String(it.shop)));
-    fr.appendChild(el("span", null, "od " + day(it.first))); body.appendChild(fr);
+    fr.appendChild(el("span", null, it.stale && !it.gone ? "sprawdzone " + day(it.last) : "od " + day(it.first)));
+    body.appendChild(fr);
     li.appendChild(body);
     return li;
   }
@@ -115,10 +116,10 @@
     $("max").value = st.max; $("maxlbl").textContent = st.max >= 3000 ? "bez limitu" : money(st.max);
     $("fresh").checked = st.fresh; $("gone").checked = st.gone;
 
-    var list = sorted(filtered()), mySizes = data.my_sizes || {}, grid = $("grid");
+    var list = sorted(filtered()), mySizes = data.my_sizes || {}, byShop = data.sizes_by_shop || {}, grid = $("grid");
     grid.textContent = "";
     var frag = document.createDocumentFragment();
-    list.slice(0, shown).forEach(function (it) { frag.appendChild(card(it, mySizes)); });
+    list.slice(0, shown).forEach(function (it) { frag.appendChild(card(it, mySizes, byShop)); });
     grid.appendChild(frag);
     if (list.length > shown) {
       var li = el("li", "more"); var b = el("button", "chip", "Pokaż więcej (" + (list.length - shown) + ")"); b.type = "button";
