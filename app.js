@@ -41,7 +41,8 @@
     var f = O.dict([["score", function (a, b) { return b.score - a.score; }]]);
     var g = { score: function (a, b) { return b.score - a.score; }, discount: function (a, b) { return b.off - a.off || a.pln - b.pln; },
       price: function (a, b) { return a.pln - b.pln; }, price_desc: function (a, b) { return b.pln - a.pln; },
-      "new": function (a, b) { return b.first - a.first || b.score - a.score; } };
+      "new": function (a, b) { return b.first - a.first || b.score - a.score; },
+      fav: function (a, b) { return (b.fav || 0) - (a.fav || 0) || b.score - a.score; } };
     O.SORTS.forEach(function (k) { f[k] = g[k]; });
     return list.slice().sort(O.own(f, st.sort) ? f[st.sort] : f.score);
   }
@@ -84,6 +85,9 @@
     var p = el("div", "price"); p.appendChild(el("span", "now", money(it.price, it.cur)));
     if (it.old) p.appendChild(el("span", "was", money(it.old, it.cur)));
     if (it.cur && it.cur !== "PLN" && typeof it.pln === "number") p.appendChild(el("span", "approx", "≈ " + money(it.pln)));
+    // second hand: what the same kind of piece costs new (median regular price seen in the shops)
+    if (it.used && typeof it.ref === "number" && it.ref > it.price)
+      p.appendChild(el("span", "approx", "nowy ≈ " + money(it.ref) + " (−" + Math.round(100 * (1 - it.price / it.ref)) + "%)"));
     body.appendChild(p);
     if (it.desc) body.appendChild(el("p", "desc", it.desc));
     var sz = el("div", "sizes");
@@ -96,7 +100,9 @@
       var first = it.hist[0];
       if (first[1] > it.price) body.appendChild(el("span", "hist", "⬇ było " + money(first[1], it.cur) + " (" + day(first[0]) + ")"));
     }
-    var fr = el("div", "foot-row"); fr.appendChild(el("span", null, O.own(SHOPS, it.shop) ? SHOPS[it.shop] : String(it.shop)));
+    var fr = el("div", "foot-row");
+    fr.appendChild(el("span", null, (O.own(SHOPS, it.shop) ? SHOPS[it.shop] : String(it.shop)) +
+      (typeof it.fav === "number" && it.fav > 0 ? " · ♥ " + it.fav : "")));
     fr.appendChild(el("span", null, it.stale && !it.gone ? "sprawdzone " + day(it.last) : "od " + day(it.first)));
     body.appendChild(fr);
     li.appendChild(body);

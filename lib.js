@@ -30,7 +30,7 @@
   }
 
   var DEFAULTS = { q: "", sort: "score", sec: "", cat: "", shop: "", brand: "", max: 3000, fresh: false, gone: false };
-  var SORTS = ["score", "discount", "price", "price_desc", "new"];
+  var SORTS = ["score", "discount", "price", "price_desc", "new", "fav"];
   // localStorage is user-controlled too: keep only known keys with sane types/values
   function validState(raw) {
     var s = {}; Object.keys(DEFAULTS).forEach(function (k) { s[k] = DEFAULTS[k]; });
