@@ -59,7 +59,7 @@
   function waistLength(t) {
     var p = /(?:^|[^\d|])W? ?(\d{2}) ?[\/xX\-] ?L? ?(\d{2})(?!\d)/.exec(t);
     if (p) return [p[1], p[2]];
-    var w = /(?:^|[^A-Z])W ?(\d{2})(?!\d)/.exec(t), l = /(?:^|[^A-Z])L ?(\d{2})(?!\d)/.exec(t);
+    var w = /(?:^|[^A-Z])W[- ]?(\d{2})(?!\d)/.exec(t), l = /(?:^|[^A-Z])L[- ]?(\d{2})(?!\d)/.exec(t);
     if (w) return [w[1], l ? l[1] : null];
     var lead = /^(\d{2})(?!\d)/.exec(t);
     if (lead && l) return [lead[1], l[1]];
