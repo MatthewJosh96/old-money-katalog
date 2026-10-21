@@ -61,7 +61,16 @@
     return list.filter(function (s) { return isMine(s, cat, mySizes); }).concat(list.filter(function (s) { return !isMine(s, cat, mySizes); }));
   }
 
-  var api = { dict: dict, own: own, safeLink: safeLink, safeImage: safeImage, validState: validState, normSize: normSize,
+  function fold(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "").replace(/ł/g, "l"); }
+  // every query word must start some word of the text ("welna" finds "wełna", not "bawełna")
+  function matches(text, query) {
+    var words = fold(text).split(/[^a-z0-9]+/).filter(Boolean);
+    return fold(query).split(/\s+/).filter(Boolean).every(function (q) {
+      return words.some(function (w) { return w.lastIndexOf(q, 0) === 0; });
+    });
+  }
+
+  var api = { fold: fold, matches: matches, dict: dict, own: own, safeLink: safeLink, safeImage: safeImage, validState: validState, normSize: normSize,
     isMine: isMine, orderSizes: orderSizes, SORTS: SORTS, DEFAULTS: DEFAULTS };
   if (typeof module !== "undefined" && module.exports) module.exports = api; else root.OMR = api;
 })(typeof window !== "undefined" ? window : this);

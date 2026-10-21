@@ -19,13 +19,11 @@
   function save() { try { localStorage.setItem("omr-state", JSON.stringify(st)); } catch (e) {} }
   function el(tag, cls, text) { var n = document.createElement(tag); if (cls) n.className = cls; if (text != null) n.textContent = text; return n; }
   function money(v, cur) { return v == null ? "" : fmt.format(v) + (cur && cur !== "PLN" ? " " + (cur === "EUR" ? "€" : cur) : " zł"); }
-  function fold(s) { return String(s || "").toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/ł/g, "l"); }
   function day(ts) { var d = new Date(ts * 1000); return ("0" + d.getDate()).slice(-2) + "." + ("0" + (d.getMonth() + 1)).slice(-2); }
 
 
   // skip: one filter to ignore, so a chip row's counts reflect all the *other* active filters
   function filtered(skip) {
-    var q = fold(st.q).split(/\s+/).filter(Boolean);
     return data.items.filter(function (it) {
       if (it.gone && !st.gone) return false;
       if (skip !== "sec" && st.sec && it.sec !== st.sec) return false;
@@ -34,7 +32,7 @@
       if (st.brand && it.brand_key !== st.brand) return false;
       if (it.pln > st.max && st.max < 3000) return false;
       if (st.fresh && !it.fresh) return false;
-      if (q.length) { var hay = fold(it.brand + " " + it.title + " " + (it.desc || "")); for (var i = 0; i < q.length; i++) if (hay.indexOf(q[i]) < 0) return false; }
+      if (st.q && !O.matches(it.brand + " " + it.title + " " + (it.desc || ""), st.q)) return false;
       return true;
     });
   }
@@ -85,6 +83,7 @@
     h.appendChild(a); body.appendChild(h);
     var p = el("div", "price"); p.appendChild(el("span", "now", money(it.price, it.cur)));
     if (it.old) p.appendChild(el("span", "was", money(it.old, it.cur)));
+    if (it.cur && it.cur !== "PLN" && typeof it.pln === "number") p.appendChild(el("span", "approx", "≈ " + money(it.pln)));
     body.appendChild(p);
     if (it.desc) body.appendChild(el("p", "desc", it.desc));
     var sz = el("div", "sizes");
