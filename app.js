@@ -74,7 +74,7 @@
     if (it.fresh === "new") badges.appendChild(el("span", "badge new", "Nowe"));
     if (it.fresh === "drop") badges.appendChild(el("span", "badge drop", "Potaniało"));
     if (it.used) badges.appendChild(el("span", "badge used", "Używane"));
-    if (it.gone) badges.appendChild(el("span", "badge", "Zniknęło z przecen " + day(it.last)));
+    if (it.gone) badges.appendChild(el("span", "badge", "Oferta wycofana " + day(it.last)));
     media.appendChild(badges); li.appendChild(media);
 
     var body = el("div", "body");
