@@ -5,7 +5,7 @@
   var O = window.OMR;
   var CATS = { sweater: "Swetry", knitwear_other: "Dzianina", shirt: "Koszule", polo: "Polo", trousers: "Spodnie",
     jeans: "Jeansy", shoes: "Buty", coat: "Płaszcze", jacket: "Kurtki", blazer: "Marynarki", other: "Inne" };
-  var SHOPS = { zara: "Zara", ralphlauren: "Ralph Lauren", ami: "AMI Paris", gomez: "Gomez", answear: "Answear",
+  var SHOPS = { breuninger: "Breuninger", peek: "Peek & Cloppenburg", massimodutti: "Massimo Dutti", zalando: "Zalando", zalando_lounge: "Zalando Lounge", zara: "Zara", ralphlauren: "Ralph Lauren", ami: "AMI Paris", gomez: "Gomez", answear: "Answear",
     mrporter: "Mr Porter", vinted: "Vinted", levis: "Levi's" };
   var PAGE = 96;
   var data = null, shown = PAGE;

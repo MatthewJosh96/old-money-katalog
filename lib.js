@@ -5,10 +5,10 @@
   function dict(pairs) { var d = Object.create(null); (pairs || []).forEach(function (p) { d[p[0]] = p[1]; }); return d; }
 
   // keep in sync with radar/urls.py
-  var LINK_HOSTS = dict([["zara", ["www.zara.com"]], ["gomez", ["gomez.pl"]], ["answear", ["answear.com"]],
+  var LINK_HOSTS = dict([["breuninger", ["www.breuninger.com"]], ["peek", ["www.peek-cloppenburg.pl"]], ["massimodutti", ["www.massimodutti.com"]],["zalando", ["www.zalando.pl"]], ["zalando_lounge", ["www.zalando-lounge.pl"]],["zara", ["www.zara.com"]], ["gomez", ["gomez.pl"]], ["answear", ["answear.com"]],
     ["vinted", ["www.vinted.pl"]], ["ralphlauren", ["www.ralphlauren.pl"]], ["mrporter", ["www.mrporter.com"]],
     ["ami", ["www.amiparis.com", "amiparis.com"]], ["levis", ["www.levi.com"]]]);
-  var IMAGE_HOSTS = ["static.zara.net", "gomez.pl", "dtcralphlauren.scene7.com", "www.mrporter.com", "cache.mrporter.com",
+  var IMAGE_HOSTS = ["cms.brnstc.de", "product.fidcdn.net", "static.massimodutti.net","img01.ztat.net","static.zara.net", "gomez.pl", "dtcralphlauren.scene7.com", "www.mrporter.com", "cache.mrporter.com",
     "cdn.shopify.com", "www.amiparis.com", "amiparis.com", "lscoglobal.scene7.com", "lsco.scene7.com"];
   var IMAGE_SUFFIXES = [".ans-media.com", ".vinted.net"];
 
